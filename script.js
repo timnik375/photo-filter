@@ -1,6 +1,8 @@
 const filter = document.querySelector('.filters');
 const resetBtn = document.querySelector('.btn-reset')
 const nextBtn = document.querySelector('.btn-next')
+const fileloadBtn = document.querySelector('.btn-load--input');
+let picture = document.querySelector('img');
 
 function filterOverlay(target) {
 	const sizing = target.dataset.sizing || '';
@@ -25,7 +27,6 @@ resetBtn.addEventListener('click', () => {
 let pictureNum = 0;
 
 nextBtn.addEventListener('click', (e) => {
-	let picture = document.querySelector('img');
 	let hourCur = new Date().getHours();
 	let dayTime = '';
 	pictureNum++;
@@ -49,6 +50,16 @@ nextBtn.addEventListener('click', (e) => {
 	} else {
 		picture.setAttribute('src', `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${dayTime}/${pictureNum}.jpg`)
 	}
+})
+
+fileloadBtn.addEventListener('change', () => {
+	const file = fileloadBtn.files[0];
+	const reader = new FileReader();
+	reader.onload = () => {
+		picture.src = reader.result;
+	}
+	reader.readAsDataURL(file);
+	fileloadBtn.value = '';
 })
 
 
