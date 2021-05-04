@@ -3,6 +3,24 @@ const resetBtn = document.querySelector('.btn-reset')
 const nextBtn = document.querySelector('.btn-next')
 const fileloadBtn = document.querySelector('.btn-load--input');
 let picture = document.querySelector('img');
+const downloadBtn = document.querySelector('.btn-save');
+let canvas = document.querySelector('canvas')
+let pictureNum = 0;
+
+
+function drawImage() {
+	const img = new Image();
+	img.setAttribute('crossOrigin', 'anonymous');
+	img.src = picture.src;
+	img.onload = function() {
+		canvas.width = img.width;
+		canvas.height = img.height;
+		const ctx = canvas.getContext("2d");
+		ctx.drawImage(img, 0, 0);
+	};
+}
+
+window.onload = drawImage;
 
 function filterOverlay(target) {
 	const sizing = target.dataset.sizing || '';
@@ -23,8 +41,6 @@ resetBtn.addEventListener('click', () => {
 		filterOverlay(elem)
 	})
 });
-
-let pictureNum = 0;
 
 nextBtn.addEventListener('click', (e) => {
 	let hourCur = new Date().getHours();
@@ -50,6 +66,8 @@ nextBtn.addEventListener('click', (e) => {
 	} else {
 		picture.setAttribute('src', `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${dayTime}/${pictureNum}.jpg`)
 	}
+
+	drawImage()
 })
 
 fileloadBtn.addEventListener('change', () => {
@@ -61,5 +79,15 @@ fileloadBtn.addEventListener('change', () => {
 	reader.readAsDataURL(file);
 	fileloadBtn.value = '';
 })
+
+downloadBtn.addEventListener('click', () => {
+	let link = document.createElement('a');
+	link.download = 'download.png';
+	link.href = canvas.toDataURL();
+	link.click();
+	link.delete;
+})
+
+
 
 

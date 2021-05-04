@@ -264,6 +264,11 @@ img {
   right: -5px;
   letter-spacing: 0;
 }
+
+canvas {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .main {
     padding-top: 40px;
