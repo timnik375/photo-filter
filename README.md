@@ -10,3 +10,4 @@ Photo filter is an app, that allows you to apply ccs filters to image and save i
 * working with Canvas API
 * working with Fullscreen API
 
+### [Deployed app](https://timnik375.github.io/photo-filter/)
