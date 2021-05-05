@@ -8,6 +8,7 @@ const canvas = document.querySelector('canvas');
 let pictureNum = 0;
 let filterValue = [];
 const btnFullscreen = document.querySelector('.fullscreen');
+const editorBtn = document.querySelectorAll('.btn');
 
 function drawImage() {
 	const img = new Image();
@@ -29,6 +30,11 @@ function getFilterValue () {
 	})
 }
 
+function toggleActiveBtn(target) {
+	editorBtn.forEach((elem) => elem.classList.remove('btn-active'));
+	target.classList.add('btn-active');
+}
+
 window.onload = drawImage;
 
 function filterOverlay(target) {
@@ -45,15 +51,17 @@ filter.addEventListener('input', (e) => {
 	drawImage();
 })
 
-resetBtn.addEventListener('click', () => {
+resetBtn.addEventListener('click', (e) => {
 	document.querySelectorAll('input[type=range]').forEach((elem) => {
 		elem.value = elem.getAttribute('value');
 		elem.nextElementSibling.innerText = elem.value;
 		filterOverlay(elem);
-	})
+	});
+
+	toggleActiveBtn(e.target)
 });
 
-nextBtn.addEventListener('click', () => {
+nextBtn.addEventListener('click', (e) => {
 	let hourCur = new Date().getHours();
 	let dayTime = null;
 	pictureNum++;
@@ -79,9 +87,11 @@ nextBtn.addEventListener('click', () => {
 	}
 
 	drawImage();
+
+	toggleActiveBtn(e.target);
 })
 
-fileloadBtn.addEventListener('change', () => {
+fileloadBtn.addEventListener('change', (e) => {
 	const file = fileloadBtn.files[0];
 	const reader = new FileReader();
 	reader.onload = () => {
@@ -90,14 +100,18 @@ fileloadBtn.addEventListener('change', () => {
 	};
 	reader.readAsDataURL(file);
 	fileloadBtn.value = null;
+
+	toggleActiveBtn(e.target.closest('label'))
 });
 
-downloadBtn.addEventListener('click', () => {
+downloadBtn.addEventListener('click', (e) => {
 	let link = document.createElement('a');
 	link.download = 'download.png';
 	link.href = canvas.toDataURL();
 	link.click();
 	link.delete;
+
+	toggleActiveBtn(e.target)
 });
 
 btnFullscreen.addEventListener('click', () => {
@@ -106,7 +120,7 @@ btnFullscreen.addEventListener('click', () => {
 	} else {
 		document.exitFullscreen()
 	}
-})
+});
 
 
 
